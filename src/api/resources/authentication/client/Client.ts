@@ -47,9 +47,9 @@ export class Authentication {
             method: "POST",
             headers: {
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "node-sdk",
-                "X-Fern-SDK-Version": "1.0.2",
-                "User-Agent": "node-sdk/1.0.2",
+                "X-Fern-SDK-Name": "@coperniq/node-sdk",
+                "X-Fern-SDK-Version": "1.0.3",
+                "User-Agent": "@coperniq/node-sdk/1.0.3",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

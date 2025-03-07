@@ -1,6 +1,6 @@
 {
-    "name": "node-sdk",
-    "version": "1.0.2",
+    "name": "@coperniq/node-sdk",
+    "version": "1.0.3",
     "private": false,
     "repository": "https://github.com/coperniq/node-sdk",
     "main": "./index.js",
