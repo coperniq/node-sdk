@@ -23,7 +23,7 @@ export const BaseRecord: core.serialization.ObjectSchema<serializers.BaseRecord.
     });
 
 export declare namespace BaseRecord {
-    interface Raw {
+    export interface Raw {
         id?: number | null;
         createdAt?: string | null;
         updatedAt?: string | null;

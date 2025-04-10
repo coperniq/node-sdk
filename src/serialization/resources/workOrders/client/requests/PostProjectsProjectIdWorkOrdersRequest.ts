@@ -19,7 +19,7 @@ export const PostProjectsProjectIdWorkOrdersRequest: core.serialization.Schema<
 });
 
 export declare namespace PostProjectsProjectIdWorkOrdersRequest {
-    interface Raw {
+    export interface Raw {
         templateId: string;
         title: string;
         description?: string | null;

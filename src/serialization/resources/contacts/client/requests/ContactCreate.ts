@@ -8,17 +8,15 @@ import * as core from "../../../../../core";
 
 export const ContactCreate: core.serialization.Schema<serializers.ContactCreate.Raw, CoperniqApi.ContactCreate> =
     core.serialization.object({
-        firstName: core.serialization.string(),
-        lastName: core.serialization.string(),
-        email: core.serialization.string().optional(),
-        phone: core.serialization.string().optional(),
+        name: core.serialization.string(),
+        phones: core.serialization.list(core.serialization.string()).optional(),
+        emails: core.serialization.list(core.serialization.string()).optional(),
     });
 
 export declare namespace ContactCreate {
-    interface Raw {
-        firstName: string;
-        lastName: string;
-        email?: string | null;
-        phone?: string | null;
+    export interface Raw {
+        name: string;
+        phones?: string[] | null;
+        emails?: string[] | null;
     }
 }

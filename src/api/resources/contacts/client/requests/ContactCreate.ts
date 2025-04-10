@@ -5,17 +5,14 @@
 /**
  * @example
  *     {
- *         firstName: "firstName",
- *         lastName: "lastName"
+ *         name: "name"
  *     }
  */
 export interface ContactCreate {
-    /** Contact's first name */
-    firstName: string;
-    /** Contact's last name */
-    lastName: string;
-    /** Contact's email address */
-    email?: string;
-    /** Contact's phone number */
-    phone?: string;
+    /** Contact's full name */
+    name: string;
+    /** List of contact phone numbers */
+    phones?: string[];
+    /** List of contact email addresses */
+    emails?: string[];
 }

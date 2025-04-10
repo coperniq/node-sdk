@@ -3,7 +3,6 @@
  */
 
 export type BadRequestErrorBodyCode = "VALIDATION_ERROR" | "INVALID_JSON" | "PREPROCESSING_ERROR";
-
 export const BadRequestErrorBodyCode = {
     ValidationError: "VALIDATION_ERROR",
     InvalidJson: "INVALID_JSON",

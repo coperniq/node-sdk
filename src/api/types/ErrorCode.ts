@@ -6,7 +6,6 @@
  * Error code
  */
 export type ErrorCode = "VALIDATION_ERROR" | "NOT_FOUND" | "UNAUTHORIZED" | "BAD_REQUEST";
-
 export const ErrorCode = {
     ValidationError: "VALIDATION_ERROR",
     NotFound: "NOT_FOUND",

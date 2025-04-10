@@ -15,7 +15,7 @@ export const ContactUpdate: core.serialization.Schema<serializers.ContactUpdate.
     });
 
 export declare namespace ContactUpdate {
-    interface Raw {
+    export interface Raw {
         firstName?: string | null;
         lastName?: string | null;
         email?: string | null;

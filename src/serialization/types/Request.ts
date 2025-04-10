@@ -20,7 +20,7 @@ export const Request: core.serialization.ObjectSchema<serializers.Request.Raw, C
     .extend(BaseRecord);
 
 export declare namespace Request {
-    interface Raw extends BaseRecord.Raw {
+    export interface Raw extends BaseRecord.Raw {
         trades?: string[] | null;
         value?: number | null;
         size?: number | null;

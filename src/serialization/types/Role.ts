@@ -13,7 +13,7 @@ export const Role: core.serialization.ObjectSchema<serializers.Role.Raw, Coperni
 });
 
 export declare namespace Role {
-    interface Raw {
+    export interface Raw {
         id: string;
         name: string;
         active: boolean;

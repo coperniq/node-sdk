@@ -5,18 +5,21 @@
 import * as serializers from "../index";
 import * as CoperniqApi from "../../api/index";
 import * as core from "../../core";
+import { BadRequestErrorBodyCode } from "./BadRequestErrorBodyCode";
 
 export const BadRequestErrorBody: core.serialization.ObjectSchema<
     serializers.BadRequestErrorBody.Raw,
     CoperniqApi.BadRequestErrorBody
 > = core.serialization.object({
     message: core.serialization.string().optional(),
-    code: core.serialization.string().optional(),
+    code: BadRequestErrorBodyCode.optional(),
+    field: core.serialization.string().optional(),
 });
 
 export declare namespace BadRequestErrorBody {
-    interface Raw {
+    export interface Raw {
         message?: string | null;
-        code?: string | null;
+        code?: BadRequestErrorBodyCode.Raw | null;
+        field?: string | null;
     }
 }

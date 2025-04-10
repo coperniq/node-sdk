@@ -14,7 +14,7 @@ export const Request: core.serialization.Schema<
 > = core.serialization.list(ProjectCreate);
 
 export declare namespace Request {
-    type Raw = ProjectCreate.Raw[];
+    export type Raw = ProjectCreate.Raw[];
 }
 
 export const Response: core.serialization.Schema<
@@ -23,5 +23,5 @@ export const Response: core.serialization.Schema<
 > = core.serialization.list(Project);
 
 export declare namespace Response {
-    type Raw = Project.Raw[];
+    export type Raw = Project.Raw[];
 }

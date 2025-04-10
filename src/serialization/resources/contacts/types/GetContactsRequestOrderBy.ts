@@ -12,5 +12,5 @@ export const GetContactsRequestOrderBy: core.serialization.Schema<
 > = core.serialization.enum_(["asc", "desc"]);
 
 export declare namespace GetContactsRequestOrderBy {
-    type Raw = "asc" | "desc";
+    export type Raw = "asc" | "desc";
 }

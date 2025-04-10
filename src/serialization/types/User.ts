@@ -17,7 +17,7 @@ export const User: core.serialization.ObjectSchema<serializers.User.Raw, Coperni
 });
 
 export declare namespace User {
-    interface Raw {
+    export interface Raw {
         id: string;
         email: string;
         firstName: string;

@@ -3,7 +3,6 @@
  */
 
 export type GetProjectsProjectIdWorkOrdersRequestOrderBy = "asc" | "desc";
-
 export const GetProjectsProjectIdWorkOrdersRequestOrderBy = {
     Asc: "asc",
     Desc: "desc",

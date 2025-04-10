@@ -3,7 +3,6 @@
  */
 
 export type PostProjectsRequestMatchBy = "title" | "primaryEmail" | "primaryPhone" | "address";
-
 export const PostProjectsRequestMatchBy = {
     Title: "title",
     PrimaryEmail: "primaryEmail",

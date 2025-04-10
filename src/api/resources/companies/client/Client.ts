@@ -9,59 +9,87 @@ import urlJoin from "url-join";
 import * as serializers from "../../../../serialization/index";
 import * as errors from "../../../../errors/index";
 
-export declare namespace Authentication {
-    interface Options {
+export declare namespace Companies {
+    export interface Options {
         environment?: core.Supplier<environments.CoperniqApiEnvironment | string>;
+        /** Specify a custom URL to connect the client to. */
+        baseUrl?: core.Supplier<string>;
         apiKey: core.Supplier<string>;
     }
 
-    interface RequestOptions {
+    export interface RequestOptions {
         /** The maximum time to wait for a response in seconds. */
         timeoutInSeconds?: number;
         /** The number of times to retry the request. Defaults to 2. */
         maxRetries?: number;
         /** A hook to abort the request. */
         abortSignal?: AbortSignal;
+        /** Additional headers to include in the request. */
+        headers?: Record<string, string>;
     }
 }
 
-export class Authentication {
-    constructor(protected readonly _options: Authentication.Options) {}
+export class Companies {
+    constructor(protected readonly _options: Companies.Options) {}
 
     /**
-     * Obtain an API key using Basic Authentication. This key will be used for all other API requests.
+     * Retrieve a paginated list of companies.
      *
-     * @param {Authentication.RequestOptions} requestOptions - Request-specific configuration.
+     * Supports:
+     * - Pagination (`page_size`, `page`)
+     * - Sorting (`order_by`, default: asc)
      *
-     * @throws {@link CoperniqApi.UnauthorizedError}
+     * @param {CoperniqApi.GetComapniesRequest} request
+     * @param {Companies.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @example
-     *     await client.authentication.getApiKey()
+     *     await client.companies.listCompanies()
      */
-    public async getApiKey(requestOptions?: Authentication.RequestOptions): Promise<CoperniqApi.ApiKeyResponse> {
+    public async listCompanies(
+        request: CoperniqApi.GetComapniesRequest = {},
+        requestOptions?: Companies.RequestOptions,
+    ): Promise<CoperniqApi.Company[]> {
+        const { page, pageSize, orderBy } = request;
+        const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
+        if (page != null) {
+            _queryParams["page"] = page.toString();
+        }
+
+        if (pageSize != null) {
+            _queryParams["page_size"] = pageSize.toString();
+        }
+
+        if (orderBy != null) {
+            _queryParams["order_by"] = orderBy;
+        }
+
         const _response = await core.fetcher({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.CoperniqApiEnvironment.Default,
-                "api-keys"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.CoperniqApiEnvironment.Default,
+                "comapnies",
             ),
-            method: "POST",
+            method: "GET",
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@coperniq/node-sdk",
-                "X-Fern-SDK-Version": "1.0.3",
-                "User-Agent": "@coperniq/node-sdk/1.0.3",
+                "X-Fern-SDK-Version": "0.0.40",
+                "User-Agent": "@coperniq/node-sdk/0.0.40",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
+                ...requestOptions?.headers,
             },
             contentType: "application/json",
+            queryParameters: _queryParams,
             requestType: "json",
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return serializers.ApiKeyResponse.parseOrThrow(_response.body, {
+            return serializers.companies.listCompanies.Response.parseOrThrow(_response.body, {
                 unrecognizedObjectKeys: "passthrough",
                 allowUnrecognizedUnionMembers: true,
                 allowUnrecognizedEnumValues: true,
@@ -71,15 +99,10 @@ export class Authentication {
         }
 
         if (_response.error.reason === "status-code") {
-            switch (_response.error.statusCode) {
-                case 401:
-                    throw new CoperniqApi.UnauthorizedError(_response.error.body);
-                default:
-                    throw new errors.CoperniqApiError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                    });
-            }
+            throw new errors.CoperniqApiError({
+                statusCode: _response.error.statusCode,
+                body: _response.error.body,
+            });
         }
 
         switch (_response.error.reason) {
@@ -89,7 +112,7 @@ export class Authentication {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.CoperniqApiTimeoutError();
+                throw new errors.CoperniqApiTimeoutError("Timeout exceeded when calling GET /comapnies.");
             case "unknown":
                 throw new errors.CoperniqApiError({
                     message: _response.error.errorMessage,

@@ -12,5 +12,5 @@ export const ClientCreateType: core.serialization.Schema<
 > = core.serialization.enum_(["RESIDENTIAL", "COMMERCIAL"]);
 
 export declare namespace ClientCreateType {
-    type Raw = "RESIDENTIAL" | "COMMERCIAL";
+    export type Raw = "RESIDENTIAL" | "COMMERCIAL";
 }

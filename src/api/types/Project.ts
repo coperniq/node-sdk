@@ -16,4 +16,6 @@ export interface Project extends CoperniqApi.BaseRecord {
     /** Associated client ID */
     clientId?: number;
     status?: CoperniqApi.ProjectStatus;
+    /** Current stage information */
+    stage?: CoperniqApi.ProjectStage;
 }

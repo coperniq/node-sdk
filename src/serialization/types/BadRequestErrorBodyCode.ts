@@ -12,5 +12,5 @@ export const BadRequestErrorBodyCode: core.serialization.Schema<
 > = core.serialization.enum_(["VALIDATION_ERROR", "INVALID_JSON", "PREPROCESSING_ERROR"]);
 
 export declare namespace BadRequestErrorBodyCode {
-    type Raw = "VALIDATION_ERROR" | "INVALID_JSON" | "PREPROCESSING_ERROR";
+    export type Raw = "VALIDATION_ERROR" | "INVALID_JSON" | "PREPROCESSING_ERROR";
 }

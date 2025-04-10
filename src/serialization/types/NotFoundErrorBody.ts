@@ -15,7 +15,7 @@ export const NotFoundErrorBody: core.serialization.ObjectSchema<
 });
 
 export declare namespace NotFoundErrorBody {
-    interface Raw {
+    export interface Raw {
         message?: string | null;
         code?: "NOT_FOUND" | null;
     }

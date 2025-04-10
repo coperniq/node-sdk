@@ -6,7 +6,6 @@
  * Type of client (residential or commercial)
  */
 export type ClientType = "RESIDENTIAL" | "COMMERCIAL";
-
 export const ClientType = {
     Residential: "RESIDENTIAL",
     Commercial: "COMMERCIAL",

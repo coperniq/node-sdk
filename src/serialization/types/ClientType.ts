@@ -10,5 +10,5 @@ export const ClientType: core.serialization.Schema<serializers.ClientType.Raw, C
     core.serialization.enum_(["RESIDENTIAL", "COMMERCIAL"]);
 
 export declare namespace ClientType {
-    type Raw = "RESIDENTIAL" | "COMMERCIAL";
+    export type Raw = "RESIDENTIAL" | "COMMERCIAL";
 }

@@ -10,7 +10,6 @@
  * * `COMPLETED` - Project has been completed
  */
 export type ProjectStatus = "ACTIVE" | "ON_HOLD" | "CANCELLED" | "COMPLETED";
-
 export const ProjectStatus = {
     Active: "ACTIVE",
     OnHold: "ON_HOLD",

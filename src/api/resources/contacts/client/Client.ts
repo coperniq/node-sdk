@@ -5,23 +5,27 @@
 import * as environments from "../../../../environments";
 import * as core from "../../../../core";
 import * as CoperniqApi from "../../../index";
-import urlJoin from "url-join";
 import * as serializers from "../../../../serialization/index";
+import urlJoin from "url-join";
 import * as errors from "../../../../errors/index";
 
 export declare namespace Contacts {
-    interface Options {
+    export interface Options {
         environment?: core.Supplier<environments.CoperniqApiEnvironment | string>;
+        /** Specify a custom URL to connect the client to. */
+        baseUrl?: core.Supplier<string>;
         apiKey: core.Supplier<string>;
     }
 
-    interface RequestOptions {
+    export interface RequestOptions {
         /** The maximum time to wait for a response in seconds. */
         timeoutInSeconds?: number;
         /** The number of times to retry the request. Defaults to 2. */
         maxRetries?: number;
         /** A hook to abort the request. */
         abortSignal?: AbortSignal;
+        /** Additional headers to include in the request. */
+        headers?: Record<string, string>;
     }
 }
 
@@ -46,10 +50,10 @@ export class Contacts {
      */
     public async listContacts(
         request: CoperniqApi.GetContactsRequest = {},
-        requestOptions?: Contacts.RequestOptions
+        requestOptions?: Contacts.RequestOptions,
     ): Promise<CoperniqApi.Contact[]> {
         const { pageSize, page, updatedAfter, updatedBefore, orderBy } = request;
-        const _queryParams: Record<string, string | string[] | object | object[]> = {};
+        const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         if (pageSize != null) {
             _queryParams["page_size"] = pageSize.toString();
         }
@@ -67,23 +71,28 @@ export class Contacts {
         }
 
         if (orderBy != null) {
-            _queryParams["order_by"] = orderBy;
+            _queryParams["order_by"] = serializers.GetContactsRequestOrderBy.jsonOrThrow(orderBy, {
+                unrecognizedObjectKeys: "strip",
+            });
         }
 
         const _response = await core.fetcher({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.CoperniqApiEnvironment.Default,
-                "contacts"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.CoperniqApiEnvironment.Default,
+                "contacts",
             ),
             method: "GET",
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@coperniq/node-sdk",
-                "X-Fern-SDK-Version": "1.0.3",
-                "User-Agent": "@coperniq/node-sdk/1.0.3",
+                "X-Fern-SDK-Version": "0.0.40",
+                "User-Agent": "@coperniq/node-sdk/0.0.40",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
+                ...requestOptions?.headers,
             },
             contentType: "application/json",
             queryParameters: _queryParams,
@@ -121,7 +130,7 @@ export class Contacts {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.CoperniqApiTimeoutError();
+                throw new errors.CoperniqApiTimeoutError("Timeout exceeded when calling GET /contacts.");
             case "unknown":
                 throw new errors.CoperniqApiError({
                     message: _response.error.errorMessage,
@@ -133,12 +142,11 @@ export class Contacts {
      * Create a new contact.
      *
      * Required fields:
-     * - `firstName`: Contact's first name
-     * - `lastName`: Contact's last name
+     * - `name`: Contact's full name
      *
      * Optional fields:
-     * - `email`: Contact's email address
-     * - `phone`: Contact's phone number
+     * - `phones`: Array of contact phone numbers
+     * - `emails`: Array of contact email addresses
      *
      * @param {CoperniqApi.ContactCreate} request
      * @param {Contacts.RequestOptions} requestOptions - Request-specific configuration.
@@ -148,28 +156,30 @@ export class Contacts {
      *
      * @example
      *     await client.contacts.createContact({
-     *         firstName: "firstName",
-     *         lastName: "lastName"
+     *         name: "name"
      *     })
      */
     public async createContact(
         request: CoperniqApi.ContactCreate,
-        requestOptions?: Contacts.RequestOptions
+        requestOptions?: Contacts.RequestOptions,
     ): Promise<CoperniqApi.Contact> {
         const _response = await core.fetcher({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.CoperniqApiEnvironment.Default,
-                "contacts"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.CoperniqApiEnvironment.Default,
+                "contacts",
             ),
             method: "POST",
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@coperniq/node-sdk",
-                "X-Fern-SDK-Version": "1.0.3",
-                "User-Agent": "@coperniq/node-sdk/1.0.3",
+                "X-Fern-SDK-Version": "0.0.40",
+                "User-Agent": "@coperniq/node-sdk/0.0.40",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
+                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -209,7 +219,7 @@ export class Contacts {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.CoperniqApiTimeoutError();
+                throw new errors.CoperniqApiTimeoutError("Timeout exceeded when calling POST /contacts.");
             case "unknown":
                 throw new errors.CoperniqApiError({
                     message: _response.error.errorMessage,
@@ -232,18 +242,21 @@ export class Contacts {
     public async getContact(contactId: string, requestOptions?: Contacts.RequestOptions): Promise<CoperniqApi.Contact> {
         const _response = await core.fetcher({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.CoperniqApiEnvironment.Default,
-                `contacts/${encodeURIComponent(contactId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.CoperniqApiEnvironment.Default,
+                `contacts/${encodeURIComponent(contactId)}`,
             ),
             method: "GET",
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@coperniq/node-sdk",
-                "X-Fern-SDK-Version": "1.0.3",
-                "User-Agent": "@coperniq/node-sdk/1.0.3",
+                "X-Fern-SDK-Version": "0.0.40",
+                "User-Agent": "@coperniq/node-sdk/0.0.40",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
+                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -282,7 +295,7 @@ export class Contacts {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.CoperniqApiTimeoutError();
+                throw new errors.CoperniqApiTimeoutError("Timeout exceeded when calling GET /contacts/{contactId}.");
             case "unknown":
                 throw new errors.CoperniqApiError({
                     message: _response.error.errorMessage,
@@ -305,18 +318,21 @@ export class Contacts {
     public async deleteContact(contactId: string, requestOptions?: Contacts.RequestOptions): Promise<void> {
         const _response = await core.fetcher({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.CoperniqApiEnvironment.Default,
-                `contacts/${encodeURIComponent(contactId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.CoperniqApiEnvironment.Default,
+                `contacts/${encodeURIComponent(contactId)}`,
             ),
             method: "DELETE",
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@coperniq/node-sdk",
-                "X-Fern-SDK-Version": "1.0.3",
-                "User-Agent": "@coperniq/node-sdk/1.0.3",
+                "X-Fern-SDK-Version": "0.0.40",
+                "User-Agent": "@coperniq/node-sdk/0.0.40",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
+                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -349,7 +365,7 @@ export class Contacts {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.CoperniqApiTimeoutError();
+                throw new errors.CoperniqApiTimeoutError("Timeout exceeded when calling DELETE /contacts/{contactId}.");
             case "unknown":
                 throw new errors.CoperniqApiError({
                     message: _response.error.errorMessage,
@@ -380,22 +396,25 @@ export class Contacts {
     public async updateContact(
         contactId: string,
         request: CoperniqApi.ContactUpdate = {},
-        requestOptions?: Contacts.RequestOptions
+        requestOptions?: Contacts.RequestOptions,
     ): Promise<CoperniqApi.Contact> {
         const _response = await core.fetcher({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.CoperniqApiEnvironment.Default,
-                `contacts/${encodeURIComponent(contactId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.CoperniqApiEnvironment.Default,
+                `contacts/${encodeURIComponent(contactId)}`,
             ),
             method: "PATCH",
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@coperniq/node-sdk",
-                "X-Fern-SDK-Version": "1.0.3",
-                "User-Agent": "@coperniq/node-sdk/1.0.3",
+                "X-Fern-SDK-Version": "0.0.40",
+                "User-Agent": "@coperniq/node-sdk/0.0.40",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
+                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -437,7 +456,7 @@ export class Contacts {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.CoperniqApiTimeoutError();
+                throw new errors.CoperniqApiTimeoutError("Timeout exceeded when calling PATCH /contacts/{contactId}.");
             case "unknown":
                 throw new errors.CoperniqApiError({
                     message: _response.error.errorMessage,

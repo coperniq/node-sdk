@@ -8,7 +8,6 @@
  * - enrich: Update only empty fields in existing record
  */
 export type PostProjectsRequestMatchFoundStrategy = "skip" | "replace" | "enrich";
-
 export const PostProjectsRequestMatchFoundStrategy = {
     Skip: "skip",
     Replace: "replace",

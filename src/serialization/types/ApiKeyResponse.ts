@@ -15,7 +15,7 @@ export const ApiKeyResponse: core.serialization.ObjectSchema<
 });
 
 export declare namespace ApiKeyResponse {
-    interface Raw {
+    export interface Raw {
         apiKey: string;
         expiresAt?: string | null;
     }

@@ -3,7 +3,6 @@
  */
 
 export type GetWorkOrdersRequestOrderBy = "asc" | "desc";
-
 export const GetWorkOrdersRequestOrderBy = {
     Asc: "asc",
     Desc: "desc",

@@ -17,7 +17,7 @@ export const Comment: core.serialization.ObjectSchema<serializers.Comment.Raw, C
     });
 
 export declare namespace Comment {
-    interface Raw {
+    export interface Raw {
         id: number;
         body: string;
         createdAt: string;

@@ -12,5 +12,5 @@ export const GetRequestsRequestOrderBy: core.serialization.Schema<
 > = core.serialization.enum_(["asc", "desc"]);
 
 export declare namespace GetRequestsRequestOrderBy {
-    type Raw = "asc" | "desc";
+    export type Raw = "asc" | "desc";
 }

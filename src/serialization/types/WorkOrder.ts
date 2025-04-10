@@ -5,6 +5,8 @@
 import * as serializers from "../index";
 import * as CoperniqApi from "../../api/index";
 import * as core from "../../core";
+import { WorkOrderStatus } from "./WorkOrderStatus";
+import { WorkOrderStatusesItem } from "./WorkOrderStatusesItem";
 
 export const WorkOrder: core.serialization.ObjectSchema<serializers.WorkOrder.Raw, CoperniqApi.WorkOrder> =
     core.serialization.object({
@@ -15,12 +17,13 @@ export const WorkOrder: core.serialization.ObjectSchema<serializers.WorkOrder.Ra
         startDate: core.serialization.date().optional(),
         endDate: core.serialization.date().optional(),
         templateId: core.serialization.number().optional(),
-        status: core.serialization.string().optional(),
+        status: WorkOrderStatus.optional(),
+        statuses: core.serialization.list(WorkOrderStatusesItem).optional(),
         projectId: core.serialization.number().optional(),
     });
 
 export declare namespace WorkOrder {
-    interface Raw {
+    export interface Raw {
         id?: number | null;
         title?: string | null;
         description?: string | null;
@@ -28,7 +31,8 @@ export declare namespace WorkOrder {
         startDate?: string | null;
         endDate?: string | null;
         templateId?: number | null;
-        status?: string | null;
+        status?: WorkOrderStatus.Raw | null;
+        statuses?: WorkOrderStatusesItem.Raw[] | null;
         projectId?: number | null;
     }
 }

@@ -12,7 +12,7 @@ export const CommentCreate: core.serialization.ObjectSchema<serializers.CommentC
     });
 
 export declare namespace CommentCreate {
-    interface Raw {
+    export interface Raw {
         body: string;
     }
 }

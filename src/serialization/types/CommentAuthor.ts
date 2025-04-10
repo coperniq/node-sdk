@@ -17,7 +17,7 @@ export const CommentAuthor: core.serialization.ObjectSchema<serializers.CommentA
     });
 
 export declare namespace CommentAuthor {
-    interface Raw {
+    export interface Raw {
         id?: number | null;
         firstName?: string | null;
         lastName?: string | null;

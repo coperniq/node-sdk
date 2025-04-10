@@ -11,6 +11,10 @@ The Coperniq TypeScript library provides convenient access to the Coperniq API f
 npm i -s @coperniq/node-sdk
 ```
 
+## Reference
+
+A full reference for this library is available [here](./reference.md).
+
 ## Usage
 
 Instantiate and use the client with the following:
@@ -19,7 +23,13 @@ Instantiate and use the client with the following:
 import { CoperniqApiClient } from "@coperniq/node-sdk";
 
 const client = new CoperniqApiClient({ apiKey: "YOUR_API_KEY" });
-await client.authentication.getApiKey();
+await client.projects.createProject({
+    body: {
+        title: "title",
+        address: "address",
+        trades: ["trades"],
+    },
+});
 ```
 
 ## Request And Response Types
@@ -44,7 +54,7 @@ will be thrown.
 import { CoperniqApiError } from "@coperniq/node-sdk";
 
 try {
-    await client.authentication.getApiKey(...);
+    await client.projects.createProject(...);
 } catch (err) {
     if (err instanceof CoperniqApiError) {
         console.log(err.statusCode);
@@ -56,22 +66,34 @@ try {
 
 ## Advanced
 
+### Additional Headers
+
+If you would like to send additional headers as part of the request, use the `headers` request option.
+
+```typescript
+const response = await client.projects.createProject(..., {
+    headers: {
+        'X-Custom-Header': 'custom value'
+    }
+});
+```
+
 ### Retries
 
 The SDK is instrumented with automatic retries with exponential backoff. A request will be retried as long
-as the request is deemed retriable and the number of retry attempts has not grown larger than the configured
+as the request is deemed retryable and the number of retry attempts has not grown larger than the configured
 retry limit (default: 2).
 
-A request is deemed retriable when any of the following HTTP status codes is returned:
+A request is deemed retryable when any of the following HTTP status codes is returned:
 
--   [408](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/408) (Timeout)
--   [429](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429) (Too Many Requests)
--   [5XX](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500) (Internal Server Errors)
+- [408](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/408) (Timeout)
+- [429](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429) (Too Many Requests)
+- [5XX](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500) (Internal Server Errors)
 
 Use the `maxRetries` request option to configure this behavior.
 
 ```typescript
-const response = await client.authentication.getApiKey(..., {
+const response = await client.projects.createProject(..., {
     maxRetries: 0 // override maxRetries at the request level
 });
 ```
@@ -81,7 +103,7 @@ const response = await client.authentication.getApiKey(..., {
 The SDK defaults to a 60 second timeout. Use the `timeoutInSeconds` option to configure this behavior.
 
 ```typescript
-const response = await client.authentication.getApiKey(..., {
+const response = await client.projects.createProject(..., {
     timeoutInSeconds: 30 // override timeout to 30s
 });
 ```
@@ -92,7 +114,7 @@ The SDK allows users to abort requests at any point by passing in an abort signa
 
 ```typescript
 const controller = new AbortController();
-const response = await client.authentication.getApiKey(..., {
+const response = await client.projects.createProject(..., {
     abortSignal: controller.signal
 });
 controller.abort(); // aborts the request
@@ -103,12 +125,12 @@ controller.abort(); // aborts the request
 The SDK defaults to `node-fetch` but will use the global fetch client if present. The SDK works in the following
 runtimes:
 
--   Node.js 18+
--   Vercel
--   Cloudflare Workers
--   Deno v1.25+
--   Bun 1.0+
--   React Native
+- Node.js 18+
+- Vercel
+- Cloudflare Workers
+- Deno v1.25+
+- Bun 1.0+
+- React Native
 
 ### Customizing Fetch Client
 

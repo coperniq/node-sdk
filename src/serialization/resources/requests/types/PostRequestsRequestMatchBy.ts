@@ -12,5 +12,5 @@ export const PostRequestsRequestMatchBy: core.serialization.Schema<
 > = core.serialization.enum_(["title", "primaryEmail", "primaryPhone", "address"]);
 
 export declare namespace PostRequestsRequestMatchBy {
-    type Raw = "title" | "primaryEmail" | "primaryPhone" | "address";
+    export type Raw = "title" | "primaryEmail" | "primaryPhone" | "address";
 }

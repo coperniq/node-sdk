@@ -6,6 +6,7 @@ import * as serializers from "../index";
 import * as CoperniqApi from "../../api/index";
 import * as core from "../../core";
 import { ProjectStatus } from "./ProjectStatus";
+import { ProjectStage } from "./ProjectStage";
 import { BaseRecord } from "./BaseRecord";
 
 export const Project: core.serialization.ObjectSchema<serializers.Project.Raw, CoperniqApi.Project> = core.serialization
@@ -16,16 +17,18 @@ export const Project: core.serialization.ObjectSchema<serializers.Project.Raw, C
         workflowId: core.serialization.number().optional(),
         clientId: core.serialization.number().optional(),
         status: ProjectStatus.optional(),
+        stage: ProjectStage.optional(),
     })
     .extend(BaseRecord);
 
 export declare namespace Project {
-    interface Raw extends BaseRecord.Raw {
+    export interface Raw extends BaseRecord.Raw {
         trades?: string[] | null;
         value?: number | null;
         size?: number | null;
         workflowId?: number | null;
         clientId?: number | null;
         status?: ProjectStatus.Raw | null;
+        stage?: ProjectStage.Raw | null;
     }
 }

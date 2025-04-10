@@ -5,23 +5,27 @@
 import * as environments from "../../../../environments";
 import * as core from "../../../../core";
 import * as CoperniqApi from "../../../index";
-import urlJoin from "url-join";
 import * as serializers from "../../../../serialization/index";
+import urlJoin from "url-join";
 import * as errors from "../../../../errors/index";
 
 export declare namespace Requests {
-    interface Options {
+    export interface Options {
         environment?: core.Supplier<environments.CoperniqApiEnvironment | string>;
+        /** Specify a custom URL to connect the client to. */
+        baseUrl?: core.Supplier<string>;
         apiKey: core.Supplier<string>;
     }
 
-    interface RequestOptions {
+    export interface RequestOptions {
         /** The maximum time to wait for a response in seconds. */
         timeoutInSeconds?: number;
         /** The number of times to retry the request. Defaults to 2. */
         maxRetries?: number;
         /** A hook to abort the request. */
         abortSignal?: AbortSignal;
+        /** Additional headers to include in the request. */
+        headers?: Record<string, string>;
     }
 }
 
@@ -48,7 +52,7 @@ export class Requests {
      */
     public async listRequests(
         request: CoperniqApi.GetRequestsRequest = {},
-        requestOptions?: Requests.RequestOptions
+        requestOptions?: Requests.RequestOptions,
     ): Promise<CoperniqApi.Request[]> {
         const {
             pageSize,
@@ -64,7 +68,7 @@ export class Requests {
             primaryPhone,
             primaryEmail,
         } = request;
-        const _queryParams: Record<string, string | string[] | object | object[]> = {};
+        const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         if (pageSize != null) {
             _queryParams["page_size"] = pageSize.toString();
         }
@@ -82,7 +86,9 @@ export class Requests {
         }
 
         if (orderBy != null) {
-            _queryParams["order_by"] = orderBy;
+            _queryParams["order_by"] = serializers.GetRequestsRequestOrderBy.jsonOrThrow(orderBy, {
+                unrecognizedObjectKeys: "strip",
+            });
         }
 
         if (includeVirtualProperties != null) {
@@ -115,18 +121,21 @@ export class Requests {
 
         const _response = await core.fetcher({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.CoperniqApiEnvironment.Default,
-                "requests"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.CoperniqApiEnvironment.Default,
+                "requests",
             ),
             method: "GET",
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@coperniq/node-sdk",
-                "X-Fern-SDK-Version": "1.0.3",
-                "User-Agent": "@coperniq/node-sdk/1.0.3",
+                "X-Fern-SDK-Version": "0.0.40",
+                "User-Agent": "@coperniq/node-sdk/0.0.40",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
+                ...requestOptions?.headers,
             },
             contentType: "application/json",
             queryParameters: _queryParams,
@@ -164,7 +173,7 @@ export class Requests {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.CoperniqApiTimeoutError();
+                throw new errors.CoperniqApiTimeoutError("Timeout exceeded when calling GET /requests.");
             case "unknown":
                 throw new errors.CoperniqApiError({
                     message: _response.error.errorMessage,
@@ -206,36 +215,44 @@ export class Requests {
      */
     public async createRequest(
         request: CoperniqApi.PostRequestsRequest,
-        requestOptions?: Requests.RequestOptions
+        requestOptions?: Requests.RequestOptions,
     ): Promise<CoperniqApi.Request> {
         const { allowNewOptions, matchBy, matchFoundStrategy, body: _body } = request;
-        const _queryParams: Record<string, string | string[] | object | object[]> = {};
+        const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         if (allowNewOptions != null) {
             _queryParams["allow_new_options"] = allowNewOptions.toString();
         }
 
         if (matchBy != null) {
-            _queryParams["match_by"] = matchBy;
+            _queryParams["match_by"] = serializers.PostRequestsRequestMatchBy.jsonOrThrow(matchBy, {
+                unrecognizedObjectKeys: "strip",
+            });
         }
 
         if (matchFoundStrategy != null) {
-            _queryParams["match_found_strategy"] = matchFoundStrategy;
+            _queryParams["match_found_strategy"] = serializers.PostRequestsRequestMatchFoundStrategy.jsonOrThrow(
+                matchFoundStrategy,
+                { unrecognizedObjectKeys: "strip" },
+            );
         }
 
         const _response = await core.fetcher({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.CoperniqApiEnvironment.Default,
-                "requests"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.CoperniqApiEnvironment.Default,
+                "requests",
             ),
             method: "POST",
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@coperniq/node-sdk",
-                "X-Fern-SDK-Version": "1.0.3",
-                "User-Agent": "@coperniq/node-sdk/1.0.3",
+                "X-Fern-SDK-Version": "0.0.40",
+                "User-Agent": "@coperniq/node-sdk/0.0.40",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
+                ...requestOptions?.headers,
             },
             contentType: "application/json",
             queryParameters: _queryParams,
@@ -276,7 +293,7 @@ export class Requests {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.CoperniqApiTimeoutError();
+                throw new errors.CoperniqApiTimeoutError("Timeout exceeded when calling POST /requests.");
             case "unknown":
                 throw new errors.CoperniqApiError({
                     message: _response.error.errorMessage,
@@ -300,28 +317,31 @@ export class Requests {
     public async getRequest(
         requestId: string,
         request: CoperniqApi.GetRequestsRequestIdRequest = {},
-        requestOptions?: Requests.RequestOptions
+        requestOptions?: Requests.RequestOptions,
     ): Promise<CoperniqApi.Request> {
         const { includeVirtualProperties } = request;
-        const _queryParams: Record<string, string | string[] | object | object[]> = {};
+        const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         if (includeVirtualProperties != null) {
             _queryParams["include_virtual_properties"] = includeVirtualProperties.toString();
         }
 
         const _response = await core.fetcher({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.CoperniqApiEnvironment.Default,
-                `requests/${encodeURIComponent(requestId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.CoperniqApiEnvironment.Default,
+                `requests/${encodeURIComponent(requestId)}`,
             ),
             method: "GET",
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@coperniq/node-sdk",
-                "X-Fern-SDK-Version": "1.0.3",
-                "User-Agent": "@coperniq/node-sdk/1.0.3",
+                "X-Fern-SDK-Version": "0.0.40",
+                "User-Agent": "@coperniq/node-sdk/0.0.40",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
+                ...requestOptions?.headers,
             },
             contentType: "application/json",
             queryParameters: _queryParams,
@@ -361,7 +381,7 @@ export class Requests {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.CoperniqApiTimeoutError();
+                throw new errors.CoperniqApiTimeoutError("Timeout exceeded when calling GET /requests/{requestId}.");
             case "unknown":
                 throw new errors.CoperniqApiError({
                     message: _response.error.errorMessage,
@@ -384,18 +404,21 @@ export class Requests {
     public async deleteRequest(requestId: string, requestOptions?: Requests.RequestOptions): Promise<void> {
         const _response = await core.fetcher({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.CoperniqApiEnvironment.Default,
-                `requests/${encodeURIComponent(requestId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.CoperniqApiEnvironment.Default,
+                `requests/${encodeURIComponent(requestId)}`,
             ),
             method: "DELETE",
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@coperniq/node-sdk",
-                "X-Fern-SDK-Version": "1.0.3",
-                "User-Agent": "@coperniq/node-sdk/1.0.3",
+                "X-Fern-SDK-Version": "0.0.40",
+                "User-Agent": "@coperniq/node-sdk/0.0.40",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
+                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -428,7 +451,7 @@ export class Requests {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.CoperniqApiTimeoutError();
+                throw new errors.CoperniqApiTimeoutError("Timeout exceeded when calling DELETE /requests/{requestId}.");
             case "unknown":
                 throw new errors.CoperniqApiError({
                     message: _response.error.errorMessage,
@@ -464,28 +487,31 @@ export class Requests {
     public async updateRequest(
         requestId: string,
         request: CoperniqApi.PatchRequestsRequestIdRequest,
-        requestOptions?: Requests.RequestOptions
+        requestOptions?: Requests.RequestOptions,
     ): Promise<CoperniqApi.Request> {
         const { allowNewOptions, body: _body } = request;
-        const _queryParams: Record<string, string | string[] | object | object[]> = {};
+        const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         if (allowNewOptions != null) {
             _queryParams["allow_new_options"] = allowNewOptions.toString();
         }
 
         const _response = await core.fetcher({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.CoperniqApiEnvironment.Default,
-                `requests/${encodeURIComponent(requestId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.CoperniqApiEnvironment.Default,
+                `requests/${encodeURIComponent(requestId)}`,
             ),
             method: "PATCH",
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@coperniq/node-sdk",
-                "X-Fern-SDK-Version": "1.0.3",
-                "User-Agent": "@coperniq/node-sdk/1.0.3",
+                "X-Fern-SDK-Version": "0.0.40",
+                "User-Agent": "@coperniq/node-sdk/0.0.40",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
+                ...requestOptions?.headers,
             },
             contentType: "application/json",
             queryParameters: _queryParams,
@@ -528,7 +554,7 @@ export class Requests {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.CoperniqApiTimeoutError();
+                throw new errors.CoperniqApiTimeoutError("Timeout exceeded when calling PATCH /requests/{requestId}.");
             case "unknown":
                 throw new errors.CoperniqApiError({
                     message: _response.error.errorMessage,

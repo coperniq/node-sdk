@@ -10,18 +10,22 @@ import * as serializers from "../../../../serialization/index";
 import * as errors from "../../../../errors/index";
 
 export declare namespace Users {
-    interface Options {
+    export interface Options {
         environment?: core.Supplier<environments.CoperniqApiEnvironment | string>;
+        /** Specify a custom URL to connect the client to. */
+        baseUrl?: core.Supplier<string>;
         apiKey: core.Supplier<string>;
     }
 
-    interface RequestOptions {
+    export interface RequestOptions {
         /** The maximum time to wait for a response in seconds. */
         timeoutInSeconds?: number;
         /** The number of times to retry the request. Defaults to 2. */
         maxRetries?: number;
         /** A hook to abort the request. */
         abortSignal?: AbortSignal;
+        /** Additional headers to include in the request. */
+        headers?: Record<string, string>;
     }
 }
 
@@ -39,18 +43,21 @@ export class Users {
     public async getCurrentUser(requestOptions?: Users.RequestOptions): Promise<CoperniqApi.User> {
         const _response = await core.fetcher({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.CoperniqApiEnvironment.Default,
-                "users"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.CoperniqApiEnvironment.Default,
+                "users",
             ),
             method: "GET",
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@coperniq/node-sdk",
-                "X-Fern-SDK-Version": "1.0.3",
-                "User-Agent": "@coperniq/node-sdk/1.0.3",
+                "X-Fern-SDK-Version": "0.0.40",
+                "User-Agent": "@coperniq/node-sdk/0.0.40",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
+                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -82,7 +89,7 @@ export class Users {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.CoperniqApiTimeoutError();
+                throw new errors.CoperniqApiTimeoutError("Timeout exceeded when calling GET /users.");
             case "unknown":
                 throw new errors.CoperniqApiError({
                     message: _response.error.errorMessage,
@@ -105,18 +112,21 @@ export class Users {
     public async inviteUser(request: CoperniqApi.UserInvite, requestOptions?: Users.RequestOptions): Promise<void> {
         const _response = await core.fetcher({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.CoperniqApiEnvironment.Default,
-                "users"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.CoperniqApiEnvironment.Default,
+                "users",
             ),
             method: "POST",
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@coperniq/node-sdk",
-                "X-Fern-SDK-Version": "1.0.3",
-                "User-Agent": "@coperniq/node-sdk/1.0.3",
+                "X-Fern-SDK-Version": "0.0.40",
+                "User-Agent": "@coperniq/node-sdk/0.0.40",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
+                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -143,7 +153,7 @@ export class Users {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.CoperniqApiTimeoutError();
+                throw new errors.CoperniqApiTimeoutError("Timeout exceeded when calling POST /users.");
             case "unknown":
                 throw new errors.CoperniqApiError({
                     message: _response.error.errorMessage,
@@ -162,18 +172,21 @@ export class Users {
     public async listRoles(requestOptions?: Users.RequestOptions): Promise<CoperniqApi.Role[]> {
         const _response = await core.fetcher({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.CoperniqApiEnvironment.Default,
-                "roles"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.CoperniqApiEnvironment.Default,
+                "roles",
             ),
             method: "GET",
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@coperniq/node-sdk",
-                "X-Fern-SDK-Version": "1.0.3",
-                "User-Agent": "@coperniq/node-sdk/1.0.3",
+                "X-Fern-SDK-Version": "0.0.40",
+                "User-Agent": "@coperniq/node-sdk/0.0.40",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
+                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -205,7 +218,7 @@ export class Users {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.CoperniqApiTimeoutError();
+                throw new errors.CoperniqApiTimeoutError("Timeout exceeded when calling GET /roles.");
             case "unknown":
                 throw new errors.CoperniqApiError({
                     message: _response.error.errorMessage,
@@ -224,18 +237,21 @@ export class Users {
     public async listTeams(requestOptions?: Users.RequestOptions): Promise<CoperniqApi.Team[]> {
         const _response = await core.fetcher({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.CoperniqApiEnvironment.Default,
-                "teams"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.CoperniqApiEnvironment.Default,
+                "teams",
             ),
             method: "GET",
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@coperniq/node-sdk",
-                "X-Fern-SDK-Version": "1.0.3",
-                "User-Agent": "@coperniq/node-sdk/1.0.3",
+                "X-Fern-SDK-Version": "0.0.40",
+                "User-Agent": "@coperniq/node-sdk/0.0.40",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
+                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -267,7 +283,7 @@ export class Users {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.CoperniqApiTimeoutError();
+                throw new errors.CoperniqApiTimeoutError("Timeout exceeded when calling GET /teams.");
             case "unknown":
                 throw new errors.CoperniqApiError({
                     message: _response.error.errorMessage,

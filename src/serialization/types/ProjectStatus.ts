@@ -10,5 +10,5 @@ export const ProjectStatus: core.serialization.Schema<serializers.ProjectStatus.
     core.serialization.enum_(["ACTIVE", "ON_HOLD", "CANCELLED", "COMPLETED"]);
 
 export declare namespace ProjectStatus {
-    type Raw = "ACTIVE" | "ON_HOLD" | "CANCELLED" | "COMPLETED";
+    export type Raw = "ACTIVE" | "ON_HOLD" | "CANCELLED" | "COMPLETED";
 }

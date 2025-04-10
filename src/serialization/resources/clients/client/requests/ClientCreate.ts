@@ -21,7 +21,7 @@ export const ClientCreate: core.serialization.Schema<
 });
 
 export declare namespace ClientCreate {
-    interface Raw {
+    export interface Raw {
         title: string;
         description?: string | null;
         address: string;

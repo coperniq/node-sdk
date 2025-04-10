@@ -16,7 +16,7 @@ export const WorkOrderTemplate: core.serialization.ObjectSchema<
 });
 
 export declare namespace WorkOrderTemplate {
-    interface Raw {
+    export interface Raw {
         id?: number | null;
         name?: string | null;
         description?: string | null;

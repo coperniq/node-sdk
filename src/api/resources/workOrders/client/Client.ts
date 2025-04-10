@@ -5,23 +5,27 @@
 import * as environments from "../../../../environments";
 import * as core from "../../../../core";
 import * as CoperniqApi from "../../../index";
-import urlJoin from "url-join";
 import * as serializers from "../../../../serialization/index";
+import urlJoin from "url-join";
 import * as errors from "../../../../errors/index";
 
 export declare namespace WorkOrders {
-    interface Options {
+    export interface Options {
         environment?: core.Supplier<environments.CoperniqApiEnvironment | string>;
+        /** Specify a custom URL to connect the client to. */
+        baseUrl?: core.Supplier<string>;
         apiKey: core.Supplier<string>;
     }
 
-    interface RequestOptions {
+    export interface RequestOptions {
         /** The maximum time to wait for a response in seconds. */
         timeoutInSeconds?: number;
         /** The number of times to retry the request. Defaults to 2. */
         maxRetries?: number;
         /** A hook to abort the request. */
         abortSignal?: AbortSignal;
+        /** Additional headers to include in the request. */
+        headers?: Record<string, string>;
     }
 }
 
@@ -49,10 +53,10 @@ export class WorkOrders {
     public async listProjectWorkOrders(
         projectId: string,
         request: CoperniqApi.GetProjectsProjectIdWorkOrdersRequest = {},
-        requestOptions?: WorkOrders.RequestOptions
+        requestOptions?: WorkOrders.RequestOptions,
     ): Promise<CoperniqApi.WorkOrder[]> {
         const { pageSize, page, updatedAfter, updatedBefore, orderBy } = request;
-        const _queryParams: Record<string, string | string[] | object | object[]> = {};
+        const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         if (pageSize != null) {
             _queryParams["page_size"] = pageSize.toString();
         }
@@ -70,23 +74,28 @@ export class WorkOrders {
         }
 
         if (orderBy != null) {
-            _queryParams["order_by"] = orderBy;
+            _queryParams["order_by"] = serializers.GetProjectsProjectIdWorkOrdersRequestOrderBy.jsonOrThrow(orderBy, {
+                unrecognizedObjectKeys: "strip",
+            });
         }
 
         const _response = await core.fetcher({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.CoperniqApiEnvironment.Default,
-                `projects/${encodeURIComponent(projectId)}/work-orders`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.CoperniqApiEnvironment.Default,
+                `projects/${encodeURIComponent(projectId)}/work-orders`,
             ),
             method: "GET",
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@coperniq/node-sdk",
-                "X-Fern-SDK-Version": "1.0.3",
-                "User-Agent": "@coperniq/node-sdk/1.0.3",
+                "X-Fern-SDK-Version": "0.0.40",
+                "User-Agent": "@coperniq/node-sdk/0.0.40",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
+                ...requestOptions?.headers,
             },
             contentType: "application/json",
             queryParameters: _queryParams,
@@ -126,7 +135,9 @@ export class WorkOrders {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.CoperniqApiTimeoutError();
+                throw new errors.CoperniqApiTimeoutError(
+                    "Timeout exceeded when calling GET /projects/{projectId}/work-orders.",
+                );
             case "unknown":
                 throw new errors.CoperniqApiError({
                     message: _response.error.errorMessage,
@@ -158,22 +169,25 @@ export class WorkOrders {
     public async createWorkOrder(
         projectId: string,
         request: CoperniqApi.PostProjectsProjectIdWorkOrdersRequest,
-        requestOptions?: WorkOrders.RequestOptions
+        requestOptions?: WorkOrders.RequestOptions,
     ): Promise<CoperniqApi.WorkOrder> {
         const _response = await core.fetcher({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.CoperniqApiEnvironment.Default,
-                `projects/${encodeURIComponent(projectId)}/work-orders`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.CoperniqApiEnvironment.Default,
+                `projects/${encodeURIComponent(projectId)}/work-orders`,
             ),
             method: "POST",
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@coperniq/node-sdk",
-                "X-Fern-SDK-Version": "1.0.3",
-                "User-Agent": "@coperniq/node-sdk/1.0.3",
+                "X-Fern-SDK-Version": "0.0.40",
+                "User-Agent": "@coperniq/node-sdk/0.0.40",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
+                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -217,7 +231,9 @@ export class WorkOrders {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.CoperniqApiTimeoutError();
+                throw new errors.CoperniqApiTimeoutError(
+                    "Timeout exceeded when calling POST /projects/{projectId}/work-orders.",
+                );
             case "unknown":
                 throw new errors.CoperniqApiError({
                     message: _response.error.errorMessage,
@@ -236,22 +252,25 @@ export class WorkOrders {
      */
     public async listClientWorkOrders(
         clientId: number,
-        requestOptions?: WorkOrders.RequestOptions
+        requestOptions?: WorkOrders.RequestOptions,
     ): Promise<CoperniqApi.WorkOrder[]> {
         const _response = await core.fetcher({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.CoperniqApiEnvironment.Default,
-                `clients/${encodeURIComponent(clientId)}/work-orders`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.CoperniqApiEnvironment.Default,
+                `clients/${encodeURIComponent(clientId)}/work-orders`,
             ),
             method: "GET",
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@coperniq/node-sdk",
-                "X-Fern-SDK-Version": "1.0.3",
-                "User-Agent": "@coperniq/node-sdk/1.0.3",
+                "X-Fern-SDK-Version": "0.0.40",
+                "User-Agent": "@coperniq/node-sdk/0.0.40",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
+                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -283,7 +302,9 @@ export class WorkOrders {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.CoperniqApiTimeoutError();
+                throw new errors.CoperniqApiTimeoutError(
+                    "Timeout exceeded when calling GET /clients/{clientId}/work-orders.",
+                );
             case "unknown":
                 throw new errors.CoperniqApiError({
                     message: _response.error.errorMessage,
@@ -309,10 +330,10 @@ export class WorkOrders {
      */
     public async listWorkOrders(
         request: CoperniqApi.GetWorkOrdersRequest = {},
-        requestOptions?: WorkOrders.RequestOptions
+        requestOptions?: WorkOrders.RequestOptions,
     ): Promise<CoperniqApi.WorkOrder[]> {
         const { pageSize, page, updatedAfter, updatedBefore, orderBy } = request;
-        const _queryParams: Record<string, string | string[] | object | object[]> = {};
+        const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         if (pageSize != null) {
             _queryParams["page_size"] = pageSize.toString();
         }
@@ -330,23 +351,28 @@ export class WorkOrders {
         }
 
         if (orderBy != null) {
-            _queryParams["order_by"] = orderBy;
+            _queryParams["order_by"] = serializers.GetWorkOrdersRequestOrderBy.jsonOrThrow(orderBy, {
+                unrecognizedObjectKeys: "strip",
+            });
         }
 
         const _response = await core.fetcher({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.CoperniqApiEnvironment.Default,
-                "work-orders"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.CoperniqApiEnvironment.Default,
+                "work-orders",
             ),
             method: "GET",
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@coperniq/node-sdk",
-                "X-Fern-SDK-Version": "1.0.3",
-                "User-Agent": "@coperniq/node-sdk/1.0.3",
+                "X-Fern-SDK-Version": "0.0.40",
+                "User-Agent": "@coperniq/node-sdk/0.0.40",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
+                ...requestOptions?.headers,
             },
             contentType: "application/json",
             queryParameters: _queryParams,
@@ -384,7 +410,7 @@ export class WorkOrders {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.CoperniqApiTimeoutError();
+                throw new errors.CoperniqApiTimeoutError("Timeout exceeded when calling GET /work-orders.");
             case "unknown":
                 throw new errors.CoperniqApiError({
                     message: _response.error.errorMessage,
@@ -403,22 +429,25 @@ export class WorkOrders {
      *     await client.workOrders.listWorkOrderTemplates()
      */
     public async listWorkOrderTemplates(
-        requestOptions?: WorkOrders.RequestOptions
+        requestOptions?: WorkOrders.RequestOptions,
     ): Promise<CoperniqApi.WorkOrderTemplate[]> {
         const _response = await core.fetcher({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.CoperniqApiEnvironment.Default,
-                "work-orders/templates"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.CoperniqApiEnvironment.Default,
+                "work-orders/templates",
             ),
             method: "GET",
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@coperniq/node-sdk",
-                "X-Fern-SDK-Version": "1.0.3",
-                "User-Agent": "@coperniq/node-sdk/1.0.3",
+                "X-Fern-SDK-Version": "0.0.40",
+                "User-Agent": "@coperniq/node-sdk/0.0.40",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
+                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -455,7 +484,7 @@ export class WorkOrders {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.CoperniqApiTimeoutError();
+                throw new errors.CoperniqApiTimeoutError("Timeout exceeded when calling GET /work-orders/templates.");
             case "unknown":
                 throw new errors.CoperniqApiError({
                     message: _response.error.errorMessage,
@@ -477,22 +506,25 @@ export class WorkOrders {
      */
     public async getWorkOrder(
         workOrderId: string,
-        requestOptions?: WorkOrders.RequestOptions
+        requestOptions?: WorkOrders.RequestOptions,
     ): Promise<CoperniqApi.WorkOrder> {
         const _response = await core.fetcher({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.CoperniqApiEnvironment.Default,
-                `work-orders/${encodeURIComponent(workOrderId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.CoperniqApiEnvironment.Default,
+                `work-orders/${encodeURIComponent(workOrderId)}`,
             ),
             method: "GET",
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@coperniq/node-sdk",
-                "X-Fern-SDK-Version": "1.0.3",
-                "User-Agent": "@coperniq/node-sdk/1.0.3",
+                "X-Fern-SDK-Version": "0.0.40",
+                "User-Agent": "@coperniq/node-sdk/0.0.40",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
+                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -531,7 +563,9 @@ export class WorkOrders {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.CoperniqApiTimeoutError();
+                throw new errors.CoperniqApiTimeoutError(
+                    "Timeout exceeded when calling GET /work-orders/{workOrderId}.",
+                );
             case "unknown":
                 throw new errors.CoperniqApiError({
                     message: _response.error.errorMessage,
@@ -556,22 +590,25 @@ export class WorkOrders {
     public async deleteWorkOrder(
         projectId: number,
         workOrderId: number,
-        requestOptions?: WorkOrders.RequestOptions
+        requestOptions?: WorkOrders.RequestOptions,
     ): Promise<void> {
         const _response = await core.fetcher({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.CoperniqApiEnvironment.Default,
-                `projects/${encodeURIComponent(projectId)}/work-orders/${encodeURIComponent(workOrderId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.CoperniqApiEnvironment.Default,
+                `projects/${encodeURIComponent(projectId)}/work-orders/${encodeURIComponent(workOrderId)}`,
             ),
             method: "DELETE",
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@coperniq/node-sdk",
-                "X-Fern-SDK-Version": "1.0.3",
-                "User-Agent": "@coperniq/node-sdk/1.0.3",
+                "X-Fern-SDK-Version": "0.0.40",
+                "User-Agent": "@coperniq/node-sdk/0.0.40",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
+                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -606,7 +643,9 @@ export class WorkOrders {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.CoperniqApiTimeoutError();
+                throw new errors.CoperniqApiTimeoutError(
+                    "Timeout exceeded when calling DELETE /projects/{projectId}/work-orders/{workOrderId}.",
+                );
             case "unknown":
                 throw new errors.CoperniqApiError({
                     message: _response.error.errorMessage,

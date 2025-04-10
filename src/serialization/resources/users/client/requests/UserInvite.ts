@@ -13,7 +13,7 @@ export const UserInvite: core.serialization.Schema<serializers.UserInvite.Raw, C
     });
 
 export declare namespace UserInvite {
-    interface Raw {
+    export interface Raw {
         email: string;
         roleId: string;
     }

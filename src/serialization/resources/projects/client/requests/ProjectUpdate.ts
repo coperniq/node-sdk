@@ -26,7 +26,7 @@ export const ProjectUpdate: core.serialization.Schema<
 });
 
 export declare namespace ProjectUpdate {
-    interface Raw {
+    export interface Raw {
         title?: string | null;
         description?: string | null;
         address?: string | null;

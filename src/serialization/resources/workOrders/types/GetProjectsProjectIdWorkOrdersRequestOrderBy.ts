@@ -12,5 +12,5 @@ export const GetProjectsProjectIdWorkOrdersRequestOrderBy: core.serialization.Sc
 > = core.serialization.enum_(["asc", "desc"]);
 
 export declare namespace GetProjectsProjectIdWorkOrdersRequestOrderBy {
-    type Raw = "asc" | "desc";
+    export type Raw = "asc" | "desc";
 }

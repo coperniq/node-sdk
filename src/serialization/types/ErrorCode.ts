@@ -10,5 +10,5 @@ export const ErrorCode: core.serialization.Schema<serializers.ErrorCode.Raw, Cop
     core.serialization.enum_(["VALIDATION_ERROR", "NOT_FOUND", "UNAUTHORIZED", "BAD_REQUEST"]);
 
 export declare namespace ErrorCode {
-    type Raw = "VALIDATION_ERROR" | "NOT_FOUND" | "UNAUTHORIZED" | "BAD_REQUEST";
+    export type Raw = "VALIDATION_ERROR" | "NOT_FOUND" | "UNAUTHORIZED" | "BAD_REQUEST";
 }

@@ -1,62 +1,5 @@
 # Reference
 
-## Authentication
-
-<details><summary><code>client.authentication.<a href="/src/api/resources/authentication/client/Client.ts">getApiKey</a>() -> CoperniqApi.ApiKeyResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Obtain an API key using Basic Authentication. This key will be used for all other API requests.
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```typescript
-await client.authentication.getApiKey();
-```
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**requestOptions:** `Authentication.RequestOptions`
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-</dd>
-</dl>
-</details>
-
 ## Projects
 
 <details><summary><code>client.projects.<a href="/src/api/resources/projects/client/Client.ts">listProjects</a>({ ...params }) -> CoperniqApi.Project[]</code></summary>
@@ -75,15 +18,15 @@ Retrieve a paginated list of projects.
 
 Supports:
 
--   Pagination (`page_size`, `page`)
--   Date filtering (`updated_after`, `updated_before`)
--   Sorting (`order_by`)
--   Field search (`title`, `address`, `primaryName`, `primaryPhone`, `primaryEmail`)
--   Full text search (`q`)
-</dd>
-</dl>
-</dd>
-</dl>
+- Pagination (`page_size`, `page`)
+- Date filtering (`updated_after`, `updated_before`)
+- Sorting (`order_by`)
+- Field search (`title`, `address`, `primaryName`, `primaryPhone`, `primaryEmail`)
+- Full text search (`q`)
+  </dd>
+  </dl>
+  </dd>
+  </dl>
 
 #### 🔌 Usage
 
@@ -145,16 +88,16 @@ Create a new project with required and optional fields.
 
 Required fields:
 
--   `title`: Project title/name
--   `address`: Project location
--   `trades`: Array of trade types
+- `title`: Project title/name
+- `address`: Project location
+- `trades`: Array of trade types
 
 Optional fields:
 
--   `clientId`: Link to existing client
--   `workflowId`: Link to workflow
--   `primaryEmail`/`primaryPhone`: Contact information
--   `custom`: Custom fields object
+- `clientId`: Link to existing client
+- `workflowId`: Link to workflow
+- `primaryEmail`/`primaryPhone`: Contact information
+- `custom`: Custom fields object
 
 Note: If primaryEmail or primaryPhone is provided, a contact will be automatically created or matched.
 
@@ -363,9 +306,9 @@ Update an existing project. Supports partial updates.
 
 Updatable fields:
 
--   Standard fields (value, size, status, etc.)
--   Contact information (primaryEmail, primaryPhone)
--   Custom fields (through custom object)
+- Standard fields (value, size, status, etc.)
+- Contact information (primaryEmail, primaryPhone)
+- Custom fields (through custom object)
 
 Note: Updates are atomic - either all fields update or none do.
 
@@ -513,15 +456,15 @@ Retrieve a paginated list of clients.
 
 Supports:
 
--   Pagination (`page_size`, `page`)
--   Date filtering (`updated_after`, `updated_before`)
--   Sorting (`order_by`, default: desc)
--   Field search (`title`, `address`, `primaryName`, `primaryPhone`, `primaryEmail`)
--   Full text search (`q`)
-</dd>
-</dl>
-</dd>
-</dl>
+- Pagination (`page_size`, `page`)
+- Date filtering (`updated_after`, `updated_before`)
+- Sorting (`order_by`, default: desc)
+- Field search (`title`, `address`, `primaryName`, `primaryPhone`, `primaryEmail`)
+- Full text search (`q`)
+  </dd>
+  </dl>
+  </dd>
+  </dl>
 
 #### 🔌 Usage
 
@@ -583,16 +526,16 @@ Create a new client with required and optional fields.
 
 Required fields:
 
--   `title`: Client name
--   `address`: Client location
+- `title`: Client name
+- `address`: Client location
 
 Optional fields:
 
--   `type`: Client type (RESIDENTIAL/COMMERCIAL)
--   `value`: Client value
--   `size`: Client size
--   `primaryEmail`/`primaryPhone`: Contact information
--   `custom`: Custom fields object
+- `type`: Client type (RESIDENTIAL/COMMERCIAL)
+- `value`: Client value
+- `size`: Client size
+- `primaryEmail`/`primaryPhone`: Contact information
+- `custom`: Custom fields object
 
 Note: If primaryEmail or primaryPhone is provided, a contact will be automatically created or matched.
 
@@ -798,9 +741,9 @@ Update an existing client. Supports partial updates.
 
 Updatable fields:
 
--   Standard fields (value, size, type, etc.)
--   Contact information (primaryEmail, primaryPhone)
--   Custom fields (through custom object)
+- Standard fields (value, size, type, etc.)
+- Contact information (primaryEmail, primaryPhone)
+- Custom fields (through custom object)
 
 Note: Updates are atomic - either all fields update or none do.
 
@@ -1366,13 +1309,13 @@ Retrieve work orders for a specific project.
 
 Supports:
 
--   Pagination (`page_size`, `page`)
--   Date filtering (`updated_after`, `updated_before`)
--   Sorting (`order_by`)
-</dd>
-</dl>
-</dd>
-</dl>
+- Pagination (`page_size`, `page`)
+- Date filtering (`updated_after`, `updated_before`)
+- Sorting (`order_by`)
+  </dd>
+  </dl>
+  </dd>
+  </dl>
 
 #### 🔌 Usage
 
@@ -1442,12 +1385,12 @@ Create a new work order in a project.
 
 Required fields:
 
--   `templateId`: Work order template to use
--   `title`: Work order title
-</dd>
-</dl>
-</dd>
-</dl>
+- `templateId`: Work order template to use
+- `title`: Work order title
+  </dd>
+  </dl>
+  </dd>
+  </dl>
 
 #### 🔌 Usage
 
@@ -1583,13 +1526,13 @@ Retrieve a paginated list of work orders across all projects.
 
 Supports:
 
--   Pagination (`page_size`, `page`)
--   Date filtering (`updated_after`, `updated_before`)
--   Sorting (`order_by`)
-</dd>
-</dl>
-</dd>
-</dl>
+- Pagination (`page_size`, `page`)
+- Date filtering (`updated_after`, `updated_before`)
+- Sorting (`order_by`)
+  </dd>
+  </dl>
+  </dd>
+  </dl>
 
 #### 🔌 Usage
 
@@ -1842,15 +1785,15 @@ Retrieve a paginated list of requests.
 
 Supports:
 
--   Pagination (`page_size`, `page`)
--   Date filtering (`updated_after`, `updated_before`)
--   Sorting (`order_by`, default: desc)
--   Field search (`title`, `address`, `primaryName`, `primaryPhone`, `primaryEmail`)
--   Full text search (`q`)
-</dd>
-</dl>
-</dd>
-</dl>
+- Pagination (`page_size`, `page`)
+- Date filtering (`updated_after`, `updated_before`)
+- Sorting (`order_by`, default: desc)
+- Field search (`title`, `address`, `primaryName`, `primaryPhone`, `primaryEmail`)
+- Full text search (`q`)
+  </dd>
+  </dl>
+  </dd>
+  </dl>
 
 #### 🔌 Usage
 
@@ -1912,19 +1855,19 @@ Create a new request with required and optional fields.
 
 Required fields:
 
--   `title`: Request title/name
--   `address`: Request location
--   `trades`: Array of trade types
+- `title`: Request title/name
+- `address`: Request location
+- `trades`: Array of trade types
 
 Optional fields:
 
--   `clientId`: Link to existing client
--   `workflowId`: Link to workflow
--   `value`: Request value
--   `size`: Request size
--   `confidence`: Confidence score (0-100)
--   `primaryEmail`/`primaryPhone`: Contact information
--   `custom`: Custom fields object
+- `clientId`: Link to existing client
+- `workflowId`: Link to workflow
+- `value`: Request value
+- `size`: Request size
+- `confidence`: Confidence score (0-100)
+- `primaryEmail`/`primaryPhone`: Contact information
+- `custom`: Custom fields object
 
 Note: If primaryEmail or primaryPhone is provided, a contact will be automatically created or matched.
 
@@ -2131,9 +2074,9 @@ Update an existing request. Supports partial updates.
 
 Updatable fields:
 
--   Standard fields (value, size, status, confidence, etc.)
--   Contact information (primaryEmail, primaryPhone)
--   Custom fields (through custom object)
+- Standard fields (value, size, status, confidence, etc.)
+- Contact information (primaryEmail, primaryPhone)
+- Custom fields (through custom object)
 
 Note: Updates are atomic - either all fields update or none do.
 
@@ -2216,13 +2159,13 @@ Retrieve a paginated list of contacts.
 
 Supports:
 
--   Pagination (`page_size`, `page`)
--   Date filtering (`updated_after`, `updated_before`)
--   Sorting (`order_by`)
-</dd>
-</dl>
-</dd>
-</dl>
+- Pagination (`page_size`, `page`)
+- Date filtering (`updated_after`, `updated_before`)
+- Sorting (`order_by`)
+  </dd>
+  </dl>
+  </dd>
+  </dl>
 
 #### 🔌 Usage
 
@@ -2284,17 +2227,16 @@ Create a new contact.
 
 Required fields:
 
--   `firstName`: Contact's first name
--   `lastName`: Contact's last name
+- `name`: Contact's full name
 
 Optional fields:
 
--   `email`: Contact's email address
--   `phone`: Contact's phone number
-</dd>
-</dl>
-</dd>
-</dl>
+- `phones`: Array of contact phone numbers
+- `emails`: Array of contact email addresses
+  </dd>
+  </dl>
+  </dd>
+  </dl>
 
 #### 🔌 Usage
 
@@ -2306,8 +2248,7 @@ Optional fields:
 
 ```typescript
 await client.contacts.createContact({
-    firstName: "firstName",
-    lastName: "lastName",
+    name: "name",
 });
 ```
 
@@ -2485,14 +2426,14 @@ Update an existing contact. Supports partial updates.
 
 Updatable fields:
 
--   `firstName`: Contact's first name
--   `lastName`: Contact's last name
--   `email`: Contact's email address
--   `phone`: Contact's phone number
-</dd>
-</dl>
-</dd>
-</dl>
+- `firstName`: Contact's first name
+- `lastName`: Contact's last name
+- `email`: Contact's email address
+- `phone`: Contact's phone number
+  </dd>
+  </dl>
+  </dd>
+  </dl>
 
 #### 🔌 Usage
 
@@ -2769,6 +2710,683 @@ await client.users.listTeams();
 <dd>
 
 **requestOptions:** `Users.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+## Properties
+
+<details><summary><code>client.properties.<a href="/src/api/resources/properties/client/Client.ts">listProperties</a>({ ...params }) -> CoperniqApi.GetPropertiesResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve list of properties organized by record type.
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.properties.listProperties();
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `CoperniqApi.GetPropertiesRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Properties.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+## Workflows
+
+<details><summary><code>client.workflows.<a href="/src/api/resources/workflows/client/Client.ts">listWorkflows</a>({ ...params }) -> CoperniqApi.Workflow[]</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve a paginated list of workflows.
+
+Supports:
+
+- Pagination (`page_size`, `page`)
+- Sorting (`order_by`, default: asc)
+  </dd>
+  </dl>
+  </dd>
+  </dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.workflows.listWorkflows();
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `CoperniqApi.GetWorkflowsRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Workflows.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+## Companies
+
+<details><summary><code>client.companies.<a href="/src/api/resources/companies/client/Client.ts">listCompanies</a>({ ...params }) -> CoperniqApi.Company[]</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve a paginated list of companies.
+
+Supports:
+
+- Pagination (`page_size`, `page`)
+- Sorting (`order_by`, default: asc)
+  </dd>
+  </dl>
+  </dd>
+  </dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.companies.listCompanies();
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `CoperniqApi.GetComapniesRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Companies.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+## Import2
+
+<details><summary><code>client.import2.<a href="/src/api/resources/import2/client/Client.ts">confirmFullMigrationStatus</a>({ ...params }) -> Record<string, unknown></code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Check if a company's data has been fully migrated to the new system.
+
+Returns migration status details including:
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.import2.confirmFullMigrationStatus({
+    token: "token",
+    destinationUsername: "destination_username",
+});
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `CoperniqApi.GetImport2ConfirmFullMigrationRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Import2.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+## Files
+
+<details><summary><code>client.files.<a href="/src/api/resources/files/client/Client.ts">getProjectFiles</a>(projectId) -> CoperniqApi.File_[]</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve all files associated with a project
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.files.getProjectFiles(1);
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**projectId:** `number`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Files.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.files.<a href="/src/api/resources/files/client/Client.ts">getRequestFiles</a>(requestId) -> CoperniqApi.File_[]</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve all files associated with a request
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.files.getRequestFiles(1);
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**requestId:** `number`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Files.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.files.<a href="/src/api/resources/files/client/Client.ts">getClientFiles</a>(clientId) -> CoperniqApi.File_[]</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve all files associated with a client
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.files.getClientFiles(1);
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**clientId:** `number`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Files.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.files.<a href="/src/api/resources/files/client/Client.ts">getProjectFile</a>(projectId, fileId) -> CoperniqApi.File_</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve a specific file associated with a project
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.files.getProjectFile(1, 1);
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**projectId:** `number` — Project identifier
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fileId:** `number` — File identifier
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Files.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.files.<a href="/src/api/resources/files/client/Client.ts">getRequestFile</a>(requestId, fileId) -> CoperniqApi.File_</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve a specific file associated with a request
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.files.getRequestFile(1, 1);
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**requestId:** `number` — Request identifier
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fileId:** `number` — File identifier
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Files.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.files.<a href="/src/api/resources/files/client/Client.ts">getClientFile</a>(clientId, fileId) -> CoperniqApi.File_</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve a specific file associated with a client
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.files.getClientFile(1, 1);
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**clientId:** `number` — Client identifier
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fileId:** `number` — File identifier
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Files.RequestOptions`
 
 </dd>
 </dl>

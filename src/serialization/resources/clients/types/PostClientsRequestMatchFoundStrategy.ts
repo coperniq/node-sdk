@@ -12,5 +12,5 @@ export const PostClientsRequestMatchFoundStrategy: core.serialization.Schema<
 > = core.serialization.enum_(["skip", "replace", "enrich"]);
 
 export declare namespace PostClientsRequestMatchFoundStrategy {
-    type Raw = "skip" | "replace" | "enrich";
+    export type Raw = "skip" | "replace" | "enrich";
 }

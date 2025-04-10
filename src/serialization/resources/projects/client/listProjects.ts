@@ -13,5 +13,5 @@ export const Response: core.serialization.Schema<
 > = core.serialization.list(Project);
 
 export declare namespace Response {
-    type Raw = Project.Raw[];
+    export type Raw = Project.Raw[];
 }

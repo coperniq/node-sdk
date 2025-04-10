@@ -15,7 +15,7 @@ export const Client: core.serialization.ObjectSchema<serializers.Client.Raw, Cop
     .extend(BaseRecord);
 
 export declare namespace Client {
-    interface Raw extends BaseRecord.Raw {
+    export interface Raw extends BaseRecord.Raw {
         type?: ClientType.Raw | null;
     }
 }

@@ -24,7 +24,7 @@ export const ProjectCreate: core.serialization.ObjectSchema<serializers.ProjectC
     });
 
 export declare namespace ProjectCreate {
-    interface Raw {
+    export interface Raw {
         title: string;
         description?: string | null;
         address: string;

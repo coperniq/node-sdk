@@ -14,7 +14,7 @@ export const Team: core.serialization.ObjectSchema<serializers.Team.Raw, Coperni
 });
 
 export declare namespace Team {
-    interface Raw {
+    export interface Raw {
         id?: number | null;
         name?: string | null;
         members?: User.Raw[] | null;

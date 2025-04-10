@@ -13,7 +13,7 @@ export const UserRole: core.serialization.ObjectSchema<serializers.UserRole.Raw,
     });
 
 export declare namespace UserRole {
-    interface Raw {
+    export interface Raw {
         id?: string | null;
         name?: string | null;
     }

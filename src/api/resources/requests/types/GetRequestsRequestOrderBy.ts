@@ -3,7 +3,6 @@
  */
 
 export type GetRequestsRequestOrderBy = "asc" | "desc";
-
 export const GetRequestsRequestOrderBy = {
     Asc: "asc",
     Desc: "desc",
